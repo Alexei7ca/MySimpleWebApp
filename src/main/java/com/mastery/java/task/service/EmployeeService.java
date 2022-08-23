@@ -2,32 +2,35 @@ package com.mastery.java.task.service;
 
 import com.mastery.java.task.dao.EmployeeDAO;
 import com.mastery.java.task.dto.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    @Autowired
-    EmployeeDAO employeeDAO;
+
+    private final EmployeeDAO employeeDAO;
+    public EmployeeService(EmployeeDAO employeeDAO) {
+        this.employeeDAO = employeeDAO;
+    }
+
 
 
     public List<Employee> getAllEmployees() {
-        return this.employeeDAO.getItems();
+        return this.employeeDAO.getEmployees();
     }
 
     public Employee getEmployeeById( int employeeId) {
-        return employeeDAO.getItemById(employeeId);
+        return employeeDAO.getEmployeeById(employeeId);
     }
 
     public List<Employee> getRangeEmployees(int from, int count) {
-        return this.employeeDAO.getItems(from, count);
+        return this.employeeDAO.getEmployees(from, count);
     }
 
 
     public Integer getEmployeeCount(){
-        return employeeDAO.getItemsCount();
+        return employeeDAO.getEmployeesCount();
     }
 
 
@@ -37,7 +40,7 @@ public class EmployeeService {
 
 
     public Employee updateEmployee(int employeeId, Employee employee){
-        Employee currentEmployee = employeeDAO.getItemById(employeeId);
+        Employee currentEmployee = employeeDAO.getEmployeeById(employeeId);
         currentEmployee.setFirstName(employee.getFirstName());
         currentEmployee.setLastName(employee.getLastName());
         currentEmployee.setGender(employee.getGender());

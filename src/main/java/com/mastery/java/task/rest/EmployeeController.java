@@ -2,7 +2,6 @@ package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +14,20 @@ import java.util.List;
 @RequestMapping("/")
 public class EmployeeController {
 
-    @Autowired
-    EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
-@GetMapping("/")
-    public String welcome(){
-    return "Rest seems to be working";
-}
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/")
+    public String welcome() {
+        return "Rest seems to be working";
+    }
 
 
     @ResponseBody
-    @GetMapping("/employee/all")
+    @GetMapping("/employees")
     public List<Employee> getAllEmployees() {
         return this.employeeService.getAllEmployees();
     }
@@ -40,43 +42,28 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/employee/{employeeId}")
-    public Employee getEmployeeById(@PathVariable(value = "employeeId")  int employeeId) {
+    @GetMapping("/employees/{employeeId}")
+    public Employee getEmployeeById(@PathVariable(value = "employeeId") int employeeId) { // how to break the program by changing this int name???
         return employeeService.getEmployeeById(employeeId);
     }
 
 
     @ResponseBody
-    @RequestMapping(value = "employee/count", method = RequestMethod.GET)
+    @GetMapping(value = "employees/count")
     public Integer getEmployeeCount() {
         return employeeService.getEmployeeCount();
     }
 
-    @PostMapping("/employee")
+    @PostMapping("/employees")
     public Employee createEmployee(@RequestBody Employee employee) {
-        LocalDate employeeBD = employee.getDateOfBirth();
-        if (employeeBD == null) throw new IllegalArgumentException("Date of birth is NULL");
-
-        LocalDate max = LocalDate.now().minus(18, ChronoUnit.YEARS);
-        LocalDate min = LocalDate.now().minus(80, ChronoUnit.YEARS);
-        if (employeeBD.isBefore(min) || employeeBD.isAfter(max))
-            throw new IllegalArgumentException("Age out of Boundaries");
-
-
+        checkEmployeeAge(employee);
         return this.employeeService.createEmployee(employee);
     }
 
 
-    @PutMapping("/employee/{employeeId}")
+    @PutMapping("/employees/{employeeId}")
     public Employee updateEmployee(@PathVariable(value = "employeeId") int employeeId, @RequestBody Employee employee) {
-        LocalDate employeeBD = employee.getDateOfBirth();
-        if (employeeBD == null) throw new IllegalArgumentException("Date of birth is NULL");
-
-        LocalDate max = LocalDate.now().minus(18, ChronoUnit.YEARS);
-        LocalDate min = LocalDate.now().minus(80, ChronoUnit.YEARS);
-        if (employeeBD.isBefore(min) || employeeBD.isAfter(max))
-            throw new IllegalArgumentException("Age out of Boundaries");
-
+        checkEmployeeAge(employee);
         return this.employeeService.updateEmployee(employeeId, employee);
     }
 
@@ -84,6 +71,17 @@ public class EmployeeController {
     @DeleteMapping("/employee/{employeeId}")
     public void deleteEmployee(@PathVariable(value = "employeeId") int employeeId) {
         this.employeeService.deleteEmployee(employeeId);
+    }
+
+    public Employee checkEmployeeAge(Employee employee) {
+        LocalDate employeeBD = employee.getDateOfBirth();
+        if (employeeBD == null) throw new IllegalArgumentException("Date of birth is NULL");
+
+        LocalDate max = LocalDate.now().minus(18, ChronoUnit.YEARS);
+        LocalDate min = LocalDate.now().minus(80, ChronoUnit.YEARS);
+        if (employeeBD.isBefore(min) || employeeBD.isAfter(max))
+            throw new IllegalArgumentException("Age out of Boundaries");
+        return employee;
     }
 
 }
