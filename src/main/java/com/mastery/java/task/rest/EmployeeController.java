@@ -33,7 +33,7 @@ public class EmployeeController {
     }
 
     @ResponseBody
-    @GetMapping("/employee")
+    @GetMapping("/employees/range") //   how to pass the arguments in browser -> /employees/range?pFrom=00&pCount=00
     public List<Employee> getRangeEmployees(@RequestParam Integer pFrom, @RequestParam Integer pCount) {
         int from = (pFrom != null && pFrom > 0) ? pFrom : 0;  //if (pFrom != null && pFrom>0) from = pFrom;
         int count = (pCount != null && pCount > 0) ? pCount : 0;

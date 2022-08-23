@@ -37,7 +37,7 @@ public class EmployeeDAO {
     }
 
     //return range
-    //please ignore this method, still working on it
+    //how to pass the arguments in browser ->  /employees/range?pFrom=00&pCount=00
     public List<Employee> getEmployees(int from, int count) {
         String query = "SELECT * FROM employees LIMIT ? OFFSET ?";
 //        List<Employee> results = template.query( query, new Object[] { count, from }, new EmployeeRowMapper());
