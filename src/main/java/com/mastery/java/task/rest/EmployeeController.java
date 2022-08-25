@@ -19,19 +19,9 @@ public class EmployeeController {
     }
 
 
-    @ResponseBody
     @GetMapping()
     public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
-    }
-
-    @ResponseBody
-    @GetMapping("/range") //   how to pass the arguments in browser -> /employees/range?from=00&count=00
-    public List<Employee> getRangeEmployees(@RequestParam Integer from, @RequestParam Integer count) {
-        int start = (from != null && from > 0) ? from : 0;  //if (pFrom != null && pFrom>0) from = pFrom;
-        int amount = (count != null && count > 0) ? count : 0;
-        if (amount > 100) amount = 100;
-        return employeeService.getRangeEmployees(start, amount);
     }
 
 
@@ -40,12 +30,6 @@ public class EmployeeController {
         return employeeService.getEmployeeById(employeeId);
     }
 
-
-    @ResponseBody
-    @GetMapping(value = "/count")
-    public Integer getEmployeesCount() {
-        return employeeService.getEmployeesCount();
-    }
 
     @PostMapping()
     public Employee createEmployee(@RequestBody Employee employee) {
@@ -81,19 +65,4 @@ public class EmployeeController {
         condition = employeeBD == null || employeeBD.isBefore(min) || employeeBD.isAfter(max);  //if (employeeBD == null || employeeBD.isBefore(min) || employeeBD.isAfter(max)) {condition = true;} else {condition = false;}
         return condition;
     }
-
-//    public Employee checkEmployeeAge(Employee employee) {
-//        LocalDate employeeBD = employee.getDateOfBirth();
-//        if (employeeBD == null){
-////            throw new IllegalArgumentException("Date of birth is NULL");
-//            condition=true;
-//        }
-//
-//        LocalDate max = LocalDate.now().minus(18, ChronoUnit.YEARS);
-//        LocalDate min = LocalDate.now().minus(80, ChronoUnit.YEARS);
-//        if (employeeBD.isBefore(min) || employeeBD.isAfter(max))
-////            throw new IllegalArgumentException("Age out of Boundaries");
-//    }
-
-
 }

@@ -39,16 +39,6 @@ public class AppConfiguration {
     }
 
     @Bean
-    public DataSource secondDataSource() {
-        DriverManagerDataSource driver = new DriverManagerDataSource();
-        driver.setDriverClassName(className);
-        driver.setUrl(url);
-        driver.setUsername(username);
-        driver.setPassword(password);
-        return driver;
-    }
-
-    @Bean
     public JdbcTemplate getJdbcTemplate(@Qualifier("getDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
