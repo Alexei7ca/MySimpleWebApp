@@ -21,13 +21,13 @@ public class EmployeeDAO {
 
     public int getEmployeesCount() {
 
-        final String scriptGetEmployeesCount = "SELECT COUNT(*) FROM employees;";
+        String scriptGetEmployeesCount = "SELECT COUNT(*) FROM employees;";
         return template.queryForObject(scriptGetEmployeesCount, Integer.class);
     }
 
 
     public List<Employee> getEmployees() {
-        final String scriptGetEmployees = "SELECT * FROM employees";
+        String scriptGetEmployees = "SELECT * FROM employees";
 //        List<Employee> results = template.query(query, new EmployeeRowMapper());
 //        List<Employee> results = template.query(query,BeanPropertyRowMapper.newInstance(Employee.class));
         return template.query(scriptGetEmployees, new BeanPropertyRowMapper<>(Employee.class));
@@ -35,21 +35,21 @@ public class EmployeeDAO {
 
     //how to pass the arguments in browser ->  /employees/range?from=00&count=00
     public List<Employee> getRangeEmployees(int from, int count) {
-        final String scriptRangeEmployees = "SELECT * FROM employees LIMIT ? OFFSET ?";
+        String scriptRangeEmployees = "SELECT * FROM employees LIMIT ? OFFSET ?";
 //        List<Employee> results = template.query( query, new Object[] { count, from }, new EmployeeRowMapper());
 //        List<Employee> results = template.query(query, new Object[]{count, from}, BeanPropertyRowMapper.newInstance(Employee.class));
         return template.query(scriptRangeEmployees, new Object[]{count, from}, new BeanPropertyRowMapper<>(Employee.class));
     }
 
     public Employee getEmployeeById(int employeeId) {
-        final String scriptGetEmployeeById = "SELECT * FROM employees WHERE employee_id = ?";
+        String scriptGetEmployeeById = "SELECT * FROM employees WHERE employee_id = ?";
 //        Employee employee = template.queryForObject( query, new Object[] { employeeId }, new EmployeeRowMapper());
 //        Employee employee = template.queryForObject(query, new Object[]{employeeId}, BeanPropertyRowMapper.newInstance(Employee.class));
         return template.queryForObject(scriptGetEmployeeById, new Object[]{employeeId}, new BeanPropertyRowMapper<>(Employee.class));
     }
 
     public Employee addEmployee(Employee employee) {
-        final String scriptAddEmployee = "insert into employees(first_name, last_name, gender, department_id, job_title, date_of_birth) values(?,?,?::gender,?,?,?)";
+        String scriptAddEmployee = "insert into employees(first_name, last_name, gender, department_id, job_title, date_of_birth) values(?,?,?::gender,?,?,?)";
         Object[] params = new Object[]{
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth()
         };
@@ -66,7 +66,7 @@ public class EmployeeDAO {
     }
 
     public Employee updateEmployee(int employeeId, Employee employee) {
-        final String scriptUpdateEmployee = "update employees set first_name=?,last_name=?,gender=?::gender,department_id=?, job_title=?,date_of_birth=? where employee_id=?";
+        String scriptUpdateEmployee = "update employees set first_name=?,last_name=?,gender=?::gender,department_id=?, job_title=?,date_of_birth=? where employee_id=?";
         Object[] params = new Object[]{
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth(), employeeId
         };
@@ -86,7 +86,7 @@ public class EmployeeDAO {
 
     public void deleteEmployee(int employeeId) {
 
-        final String scriptDeleteEmployee = "delete from employees where employee_id=?";
+        String scriptDeleteEmployee = "delete from employees where employee_id=?";
         template.update(scriptDeleteEmployee, employeeId);
     }
 
