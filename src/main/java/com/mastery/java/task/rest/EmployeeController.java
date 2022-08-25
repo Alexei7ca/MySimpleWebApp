@@ -43,8 +43,8 @@ public class EmployeeController {
 
     @ResponseBody
     @GetMapping(value = "/count")
-    public Integer getEmployeeCount() {
-        return employeeService.getEmployeeCount();
+    public Integer getEmployeesCount() {
+        return employeeService.getEmployeesCount();
     }
 
     @PostMapping()

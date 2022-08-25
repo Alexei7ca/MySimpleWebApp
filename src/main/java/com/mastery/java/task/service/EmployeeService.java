@@ -29,7 +29,7 @@ public class EmployeeService {
     }
 
 
-    public Integer getEmployeeCount() {
+    public Integer getEmployeesCount() {
         return employeeDAO.getEmployeesCount();
     }
 
