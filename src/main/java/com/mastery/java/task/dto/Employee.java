@@ -5,10 +5,30 @@ import javax.persistence.*; //для сохранении entity, JPA
 
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class Employee { //reorganize, first all variables, then all getters n setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")      //make this  work
     public Integer employeeId;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
+
+    @Column(name = "department_id")
+    private int departmentId;
+
+    @Column(name = "job_title")
+    private String jobTitle;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
     public Integer getEmployeeId() {
         return employeeId;
@@ -17,8 +37,7 @@ public class Employee {
     public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
     }
-    @Column(name = "first_name")
-    private String firstName;
+
 
     public String getFirstName() {
         return firstName;
@@ -28,8 +47,6 @@ public class Employee {
         this.firstName = firstName;
     }
 
-    @Column(name = "last_name")
-    private String lastName;
 
     public String getLastName() {
         return lastName;
@@ -39,9 +56,6 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private Gender gender;
 
     public Gender getGender() {
         return gender;
@@ -51,8 +65,6 @@ public class Employee {
         this.gender = gender;
     }
 
-    @Column(name = "department_id")
-    private int departmentId;
 
     public int getDepartmentId() {
         return departmentId;
@@ -62,8 +74,6 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    @Column(name = "job_title")
-    private String jobTitle;
 
     public String getJobTitle() {
         return jobTitle;
@@ -73,8 +83,6 @@ public class Employee {
         this.jobTitle = jobTitle;
     }
 
-    @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;

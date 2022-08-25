@@ -18,15 +18,17 @@ public class EmployeeDAO {
         this.template = template;
     }
 
+    private final String scriptGetEmployeesCount = "SELECT COUNT(*) FROM employees;";
     private final String scriptGetEmployees = "SELECT * FROM employees";
-    private final String scriptGetEmployeeById = "SELECT * FROM employees WHERE employeeId = ?";
+    private final String scriptRangeEmployees = "SELECT * FROM employees LIMIT ? OFFSET ?";
+    private final String scriptGetEmployeeById = "SELECT * FROM employees WHERE employee_id = ?";
     private final String scriptAddEmployee = "insert into employees(first_name, last_name, gender, department_id, job_title, date_of_birth) values(?,?,?::gender,?,?,?)";
-    private final String scriptUpdateEmployee = "update employees set first_name=?,last_name=?,gender=?::gender,department_id=?, job_title=?,date_of_birth=? where employeeId=?";
-    private final String scriptDeleteEmployee = "delete from employees where employeeId=?";
+    private final String scriptUpdateEmployee = "update employees set first_name=?,last_name=?,gender=?::gender,department_id=?, job_title=?,date_of_birth=? where employee_id=?";
+    private final String scriptDeleteEmployee = "delete from employees where employee_id=?";
 
 
-    public int getEmployeesCount() {
-        return template.queryForObject("SELECT COUNT(*) FROM employees;", Integer.class);
+    public int getEmployeesCount(){
+        return template.queryForObject(scriptGetEmployeesCount, Integer.class);
     }
 
 
@@ -36,13 +38,11 @@ public class EmployeeDAO {
         return template.query(scriptGetEmployees, new BeanPropertyRowMapper<>(Employee.class));
     }
 
-    //return range
-    //how to pass the arguments in browser ->  /employees/range?pFrom=00&pCount=00
-    public List<Employee> getEmployees(int from, int count) {
-        String query = "SELECT * FROM employees LIMIT ? OFFSET ?";
+    //how to pass the arguments in browser ->  /employees/range?from=00&count=00
+    public List<Employee> getRangeEmployees(int from, int count) {
 //        List<Employee> results = template.query( query, new Object[] { count, from }, new EmployeeRowMapper());
 //        List<Employee> results = template.query(query, new Object[]{count, from}, BeanPropertyRowMapper.newInstance(Employee.class));
-        return template.query(query, new Object[]{count, from}, new BeanPropertyRowMapper<>(Employee.class));
+        return template.query(scriptRangeEmployees, new Object[]{count, from}, new BeanPropertyRowMapper<>(Employee.class));
     }
 
     public Employee getEmployeeById(int employeeId) {
@@ -64,14 +64,15 @@ public class EmployeeDAO {
                 Types.DATE
         };
         template.update(scriptAddEmployee, params, types);
-        String newEmployeeId = "SELECT MAX(employeeId) FROM employees";
-        int id = template.queryForObject(newEmployeeId, Integer.class);
-        return getEmployeeById(id);
+        String newEmployeeId = "SELECT MAX(employee_id) FROM employees"; //we find the id of the employee we just added (the max id because it was the last employee to be added)
+        int id = template.queryForObject(newEmployeeId, Integer.class); // we populate our variable with the id we just got from the sql query
+        return getEmployeeById(id); // we return our employee after finding it via the id
     }
 
-    public Employee updateEmployee(Employee employee) {
+    public Employee updateEmployee(int employeeId, Employee employee) {
         Object[] params = new Object[]{
-                employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth(), employee.getEmployeeId()
+//                employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth(), employee.getEmployeeId()
+                employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth(), employeeId
         };
         int[] types = new int[]{
                 Types.VARCHAR,
