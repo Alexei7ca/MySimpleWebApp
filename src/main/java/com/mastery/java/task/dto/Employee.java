@@ -5,7 +5,7 @@ import javax.persistence.*; //для сохранении entity, JPA
 
 @Entity
 @Table(name = "employees")
-public class Employee { //reorganize, first all variables, then all getters n setters
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")      //make this  work

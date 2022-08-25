@@ -28,8 +28,6 @@ public class AppConfiguration {
     private String password;
 
 
-    //if we were planning to use this anywhere else then it should be a Bean, so we can autowire it
-    //ths should have a bean annotation, figure out why
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource driver = new DriverManagerDataSource();

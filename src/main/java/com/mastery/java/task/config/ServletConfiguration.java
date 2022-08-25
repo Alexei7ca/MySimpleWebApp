@@ -4,14 +4,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class ServletConfiguration extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-        @Override
+    @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
                 AppConfiguration.class,
         };
     }
 
-    // Тут добавляем конфигурацию, в которой инициализируем ViewResolver
     @Override
     protected Class<?>[] getServletConfigClasses() {  //tomCat needs a servlet
 

@@ -22,7 +22,7 @@ public class EmployeeController {
     @ResponseBody
     @GetMapping()
     public List<Employee> getAllEmployees() {
-        return this.employeeService.getAllEmployees();
+        return employeeService.getAllEmployees();
     }
 
     @ResponseBody
@@ -31,7 +31,7 @@ public class EmployeeController {
         int start = (from != null && from > 0) ? from : 0;  //if (pFrom != null && pFrom>0) from = pFrom;
         int amount = (count != null && count > 0) ? count : 0;
         if (amount > 100) amount = 100;
-        return this.employeeService.getRangeEmployees(start, amount);
+        return employeeService.getRangeEmployees(start, amount);
     }
 
 
@@ -49,8 +49,10 @@ public class EmployeeController {
 
     @PostMapping()
     public Employee createEmployee(@RequestBody Employee employee) {
-        checkEmployeeAge(employee);
-        return this.employeeService.createEmployee(employee);
+        if (checkEmployeeAge(employee)) {
+            throw new IllegalArgumentException("Date of birth is incorrect");
+        }
+        return employeeService.createEmployee(employee);
     }
 
 
@@ -61,13 +63,13 @@ public class EmployeeController {
         } else if (checkEmployeeAge(employee)) {
             throw new IllegalArgumentException("Date of birth is incorrect");
         }
-        return this.employeeService.updateEmployee(employeeId, employee);
+        return employeeService.updateEmployee(employeeId, employee);
     }
 
 
     @DeleteMapping("/{employeeId}")
     public void deleteEmployee(@PathVariable(value = "employeeId") int employeeId) {
-        this.employeeService.deleteEmployee(employeeId);
+        employeeService.deleteEmployee(employeeId);
     }
 
     public Boolean checkEmployeeAge(Employee employee) {
@@ -76,11 +78,7 @@ public class EmployeeController {
 
         LocalDate max = LocalDate.now().minus(18, ChronoUnit.YEARS);
         LocalDate min = LocalDate.now().minus(80, ChronoUnit.YEARS);
-        if (employeeBD == null || employeeBD.isBefore(min) || employeeBD.isAfter(max)) {
-            condition = true;
-        } else {
-            condition = false;
-        }
+        condition = employeeBD == null || employeeBD.isBefore(min) || employeeBD.isAfter(max);  //if (employeeBD == null || employeeBD.isBefore(min) || employeeBD.isAfter(max)) {condition = true;} else {condition = false;}
         return condition;
     }
 

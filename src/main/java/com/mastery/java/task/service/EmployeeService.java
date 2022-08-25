@@ -10,36 +10,37 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeDAO employeeDAO;
+
     public EmployeeService(EmployeeDAO employeeDAO) {
         this.employeeDAO = employeeDAO;
     }
 
 
-
     public List<Employee> getAllEmployees() {
-        return this.employeeDAO.getEmployees();
-    } //do we need "this" here??
+        return employeeDAO.getEmployees();
+    }
 
-    public Employee getEmployeeById( int employeeId) {
+    public Employee getEmployeeById(int employeeId) {
         return employeeDAO.getEmployeeById(employeeId);
     }
 
     public List<Employee> getRangeEmployees(int from, int count) {
-        return this.employeeDAO.getRangeEmployees(from, count);
+        return employeeDAO.getRangeEmployees(from, count);
     }
 
 
-    public Integer getEmployeeCount(){
+    public Integer getEmployeeCount() {
         return employeeDAO.getEmployeesCount();
     }
 
 
     public Employee createEmployee(Employee employee) {
-        return this.employeeDAO.addEmployee(employee);
+        return employeeDAO.addEmployee(employee);
     }
 
 
-    public Employee updateEmployee(int employeeId, Employee employee){
+    public Employee updateEmployee(int employeeId, Employee employee) {
+        //below is code that HttpMessageConverter already does for you, so it's not needed here
 //    public Employee updateEmployee(int employeeId, Employee employee){
 //        Employee currentEmployee = employeeDAO.getEmployeeById(employeeId);
 //        currentEmployee.setFirstName(employee.getFirstName());
@@ -49,11 +50,11 @@ public class EmployeeService {
 //        currentEmployee.setJobTitle(employee.getJobTitle());
 //        currentEmployee.setDateOfBirth(employee.getDateOfBirth());
 //        return this.employeeDAO.updateEmployee(currentEmployee);
-        return this.employeeDAO.updateEmployee(employeeId, employee);
+        return employeeDAO.updateEmployee(employeeId, employee);
     }
 
     public void deleteEmployee(int employeeId) {
-        this.employeeDAO.deleteEmployee(employeeId);
+        employeeDAO.deleteEmployee(employeeId);
     }
 
 }
