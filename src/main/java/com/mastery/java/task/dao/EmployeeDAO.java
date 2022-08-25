@@ -12,25 +12,26 @@ import java.util.List;
 public class EmployeeDAO {
 
     private final JdbcTemplate template;
+    private final String scriptGetEmployees = "SELECT * FROM employees";
+    private final String scriptGetEmployeeById = "SELECT * FROM employees WHERE employee_id = ?";
+    private final String scriptAddEmployee = "insert into employees(first_name, last_name, gender, department_id, job_title, date_of_birth) values(?,?,?::gender,?,?,?)";
+    private final String scriptUpdateEmployee = "update employees set first_name=?,last_name=?,gender=?::gender,department_id=?, job_title=?,date_of_birth=? where employee_id=?";
+    private final String scriptDeleteEmployee = "delete from employees where employee_id=?";
 
-    //    @Autowired    //annotation not needed when using injection via constructor
     public EmployeeDAO(JdbcTemplate template) {
         this.template = template;
     }
 
 
     public List<Employee> getEmployees() {
-        String scriptGetEmployees = "SELECT * FROM employees";
         return template.query(scriptGetEmployees, new BeanPropertyRowMapper<>(Employee.class));
     }
 
     public Employee getEmployeeById(int employeeId) {
-        String scriptGetEmployeeById = "SELECT * FROM employees WHERE employee_id = ?";
         return template.queryForObject(scriptGetEmployeeById, new Object[]{employeeId}, new BeanPropertyRowMapper<>(Employee.class));
     }
 
     public Employee addEmployee(Employee employee) {
-        String scriptAddEmployee = "insert into employees(first_name, last_name, gender, department_id, job_title, date_of_birth) values(?,?,?::gender,?,?,?)";
         Object[] params = new Object[]{
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth()
         };
@@ -47,7 +48,6 @@ public class EmployeeDAO {
     }
 
     public Employee updateEmployee(int employeeId, Employee employee) {
-        String scriptUpdateEmployee = "update employees set first_name=?,last_name=?,gender=?::gender,department_id=?, job_title=?,date_of_birth=? where employee_id=?";
         Object[] params = new Object[]{
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(), employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth(), employeeId
         };
@@ -66,8 +66,6 @@ public class EmployeeDAO {
     }
 
     public void deleteEmployee(int employeeId) {
-
-        String scriptDeleteEmployee = "delete from employees where employee_id=?";
         template.update(scriptDeleteEmployee, employeeId);
     }
 }
