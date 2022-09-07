@@ -1,46 +1,32 @@
 package com.mastery.java.task.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import javax.sql.DataSource;
-
-
-@Configuration
-@EnableWebMvc
-@PropertySource("classpath:/application.properties")
-@ComponentScan("com.mastery.java.task")
+//@Configuration
+//@EnableWebMvc
+//@PropertySource("classpath:/application.properties")
+//@ComponentScan("com.mastery.java.task")
 public class AppConfiguration {
-    @Value("${spring.datasource.class}")
-    private String className;
-    @Value("${spring.datasource.url}")
-    private String url;
-    @Value("${spring.datasource.username}")
-    private String username;
-    @Value("${spring.datasource.password}")
-    private String password;
 
+//    class ResourceBundle - Resource bundles contain locale-specific objects.
+//    When your program needs a locale-specific resource
+//    your program can load it from the resource bundle that is appropriate for the current user's locale.
+//    In this way, you can write program code that is largely independent of the user's locale isolating most,
+//    if not all, of the locale-specific information in resource bundles.
 
-    @Bean
-    public DataSource getDataSource() {
-        DriverManagerDataSource driver = new DriverManagerDataSource();
-        driver.setDriverClassName(className);
-        driver.setUrl(url);
-        driver.setUsername(username);
-        driver.setPassword(password);
-        return driver;
-    }
-
-    @Bean
-    public JdbcTemplate getJdbcTemplate(@Qualifier("getDataSource") DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }
+//    @Bean
+//    public MessageSource messageSource() {  //Strategy interface for resolving messages, with support for the parameterization and internationalization of such messages.
+//        ResourceBundleMessageSource resource = new ResourceBundleMessageSource(); // implementation that accesses resource bundles using specified basenames
+//        resource.setBasenames ("errorMessages");   // the name of the file where you have the messages
+//        return resource;
+//    }
+//
+//    @Bean(name="validator")
+//            public LocalValidatorFactoryBean validator(MessageSource resource){  //This is the central class for javax.validation
+//            LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+//            bean.setValidationMessageSource(resource);  //Specify a custom Spring MessageSource for resolving validation messages, instead of relying on JSR-303's default "ValidationMessages.properties" bundle in the classpath.
+//            return bean;
+//}
+//    public Validator getValidator(LocalValidatorFactoryBean validator) {
+//        return validator;
+//    }
 }
 

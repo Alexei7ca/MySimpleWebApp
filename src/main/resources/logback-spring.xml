@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--By setting the scan attribute to true, we're telling Logback to check the configuration file for changes.-->
+<!--so if we change the logLevel in this .xml we just have to wait for 5 secs (in this case) and logback will do the change (no need to stop the app)-->
+<!--<configuration scan="true" scanPeriod="15 seconds">-->
+
+<configuration scan="true">
+
+    <!--this indicates we will have a directory "logs" where we will store our log files-->
+    <property name="LOGS" value="./src/main/java/com/mastery/java/task/logs"/>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="INFO_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS}/info.log</file>
+        <!--        append false means it clears on every start of the app-->
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="WARN_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS}/warn.log</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOGS}/error.log</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="Console"/>
+    </root>
+
+    <logger name="com.mastery.java.task" level="INFO">
+        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="WARN_FILE"/>
+        <appender-ref ref="INFO_FILE"/>
+    </logger>
+</configuration>
+
+
+        <!--    <appender name="DEBUG_FILE"-->
+        <!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--    <file>${LOG_PATH}debug.log</file>-->
+        <!--    <rollingPolicy-->
+        <!--            class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--        <fileNamePattern>${LOG_PATH}debug%d{yyyy-MM-dd-HH-mm}.log-->
+        <!--        </fileNamePattern>-->
+        <!--        <maxHistory>7</maxHistory>-->
+        <!--        <totalSizeCap>1MB</totalSizeCap>-->
+        <!--    </rollingPolicy>-->
+        <!--    <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+        <!--        <level>DEBUG</level>-->
+        <!--        <onMatch>ACCEPT</onMatch>-->
+        <!--        <onMismatch>DENY</onMismatch>-->
+        <!--    </filter>-->
