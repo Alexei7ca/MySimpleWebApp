@@ -28,46 +28,46 @@ public class EmployeeController {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);  //это можно заменить на аннотацию @Slf4j если подключить библиотеку "lombok"
 
 
+    @GetMapping() //  /employees?firstName=&lastName=
     @ApiOperation(value = "getAllEmployeesOrGetByNameLastName")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @GetMapping() //  /employees?firstName=&lastName=
     public List<Employee> getAllEmployeesOrGetByNameLastName(@RequestParam(defaultValue = "") String firstName, @RequestParam(defaultValue = "") String lastName) {
         logger.info("GetAllEmployeesOrGetByNameLastName - params: firstName - {}, lastName - {}", firstName, lastName);
         return employeeService.getAllEmployeesOrGetEmployeesByNameOrLastName(firstName, lastName);
     }
 
+    @GetMapping("/{employeeId}")
     @ApiOperation(value = "getEmployeeById")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @GetMapping("/{employeeId}")
     public Employee getEmployeeById(@PathVariable(value = "employeeId") @Min(value = 1,message = "id cannot be 0 or a negative number") int employeeId) { // how to break the program by changing this int name???
         logger.info("GetEmployeeById - params: {}", employeeId);
         return employeeService.getEmployeeById(employeeId);
     }
 
 
+    @PostMapping()
     @ApiOperation(value = "createEmployee")
     @ApiResponse(code = 500, message = "Internal Server Error")
-    @PostMapping()
     public Employee createEmployee(@RequestBody @Valid Employee employee) {
         logger.info("CreateEmployee - params: {}", employee);
         return employeeService.createEmployee(employee);
     }
 
 
+    @PutMapping("/{employeeId}")
     @ApiOperation(value = "updateEmployee")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @PutMapping("/{employeeId}")
-    public Employee updateEmployee(@PathVariable(value = "employeeId") int employeeId, @Valid @RequestBody Employee employee) {  //since the names for the method parameter and the path variable are the same we do not need to add a parameter to @PathVariable
+    public Employee updateEmployee(@PathVariable(value = "employeeId") @Min(value = 1,message = "id cannot be 0 or a negative number") int employeeId, @Valid @RequestBody Employee employee) {  //since the names for the method parameter and the path variable are the same we do not need to add a parameter to @PathVariable
         logger.info("UpdateEmployee - params: Id of employee to be updated {}, new employee params {}", employeeId, employee);
         if (employeeId != employee.getEmployeeId()) {
             throw new IllegalArgumentException("Employee ids do not match");
@@ -76,13 +76,13 @@ public class EmployeeController {
     }
 
 
+    @DeleteMapping("/{employeeId}")
     @ApiOperation(value = "deleteEmployee")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @DeleteMapping("/{employeeId}")
-    public void deleteEmployee(@PathVariable(value = "employeeId") int employeeId) {
+    public void deleteEmployee(@PathVariable(value = "employeeId") @Min(value = 1,message = "id cannot be 0 or a negative number") int employeeId) {
         logger.info("DeleteEmployee - params: employeeId{}", employeeId);
         employeeService.deleteEmployee(employeeId);
     }

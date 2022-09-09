@@ -38,8 +38,7 @@ public class EmployeeService {
     @Transactional
     //I need this here bcuz I have 2 actions (1- take out employee, 1- save employee | editing the employee does not happen in the db)
     public Employee updateEmployee(int employeeId, Employee employeeDetails) {
-        if (employeeDAO.findById(employeeId).isPresent()) {
-            Employee currentEmployee = getEmployeeById(employeeId);
+            Employee currentEmployee = employeeDAO.findById(employeeId).orElseThrow(() ->new EmployeeServiceNotFoundException("Not found Employee with id = " + employeeId));
             currentEmployee.setFirstName(employeeDetails.getFirstName());
             currentEmployee.setLastName(employeeDetails.getLastName());
             currentEmployee.setGender(employeeDetails.getGender());
@@ -47,7 +46,6 @@ public class EmployeeService {
             currentEmployee.setJobTitle(employeeDetails.getJobTitle());
             currentEmployee.setDateOfBirth(employeeDetails.getDateOfBirth());
             return employeeDAO.save(currentEmployee);
-        } else throw new EmployeeServiceNotFoundException("Not found Employee with id = " + employeeId);
     }
 
     public void deleteEmployee(int employeeId) {
