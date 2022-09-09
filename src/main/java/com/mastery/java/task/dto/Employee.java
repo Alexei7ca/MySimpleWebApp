@@ -28,7 +28,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  //the IDENTITY strategy relies on the DB auto-increment column
     @Column(name = "employee_id")
-    public Integer employeeId;
+    private Integer employeeId;
 
     @Column(name = "first_name")
     @NotBlank(message = "Name is mandatory")
@@ -122,8 +122,7 @@ public class Employee {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Employee)) return false;
-        Employee employee = (Employee) o;
+        if (!(o instanceof Employee employee)) return false;
         return getDepartmentId() == employee.getDepartmentId() && getEmployeeId().equals(employee.getEmployeeId()) && getFirstName().equals(employee.getFirstName()) && getLastName().equals(employee.getLastName()) && getGender() == employee.getGender() && Objects.equals(getJobTitle(), employee.getJobTitle()) && Objects.equals(getDateOfBirth(), employee.getDateOfBirth());
     }
 

@@ -7,13 +7,16 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/employees")
+@Validated  //needed in the controller at the class level, so that Spring can evaluate the constraint annotations on method parameters
 //@RequestMapping(value = "/employees", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
 public class EmployeeController {
     private final EmployeeService employeeService;
@@ -33,8 +36,7 @@ public class EmployeeController {
     @GetMapping() //  /employees?firstName=&lastName=
     public List<Employee> getAllEmployeesOrGetByNameLastName(@RequestParam(defaultValue = "") String firstName, @RequestParam(defaultValue = "") String lastName) {
         logger.info("GetAllEmployeesOrGetByNameLastName - params: firstName - {}, lastName - {}", firstName, lastName);
-        List<Employee> employeesResult = employeeService.getAllEmployeesOrGetEmployeesByNameOrLastName(firstName, lastName);
-        return employeesResult;
+        return employeeService.getAllEmployeesOrGetEmployeesByNameOrLastName(firstName, lastName);
     }
 
     @ApiOperation(value = "getEmployeeById")
@@ -43,7 +45,7 @@ public class EmployeeController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     @GetMapping("/{employeeId}")
-    public Employee getEmployeeById(@PathVariable(value = "employeeId") int employeeId) { // how to break the program by changing this int name???
+    public Employee getEmployeeById(@PathVariable(value = "employeeId") @Min(value = 1,message = "id cannot be 0 or a negative number") int employeeId) { // how to break the program by changing this int name???
         logger.info("GetEmployeeById - params: {}", employeeId);
         return employeeService.getEmployeeById(employeeId);
     }
@@ -61,6 +63,7 @@ public class EmployeeController {
     @ApiOperation(value = "updateEmployee")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     @PutMapping("/{employeeId}")
