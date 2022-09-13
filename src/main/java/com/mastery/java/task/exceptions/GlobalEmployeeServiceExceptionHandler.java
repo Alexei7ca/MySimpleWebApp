@@ -3,9 +3,11 @@ package com.mastery.java.task.exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 
 //@ControllerAdvice is a specialization of the @Component annotation which allows to handle exceptions  (контроллер для ошибок)
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 // this is a combination of @ControllerAdvice + @ResponseBody  // without this we would need to add the @ExceptionHandler to all our Controller classes
 public class GlobalEmployeeServiceExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEmployeeServiceExceptionHandler.class);
+    private final String GLOBAL_EXCEPTION_MESSAGE = "Internal Server Error";
 
 
     @ExceptionHandler(EmployeeServiceNotFoundException.class)
@@ -27,14 +30,35 @@ public class GlobalEmployeeServiceExceptionHandler {
 
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class) // did not pass validation (age 18+ for example or name is null)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String throwMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+        logger.error("MethodArgumentNotValidException Thrown ", methodArgumentNotValidException);
+        return methodArgumentNotValidException.getMessage();
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)  //this is the ones for the ids that do not match
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String throwIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+        logger.error("IllegalArgumentException Thrown ", illegalArgumentException);
+        return illegalArgumentException.getMessage();
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)  //when an int is required (like id) but user writes somth else
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String throwMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException methodArgumentTypeMismatchException) {
+        logger.error("IllegalArgumentException Thrown ", methodArgumentTypeMismatchException);
+        return methodArgumentTypeMismatchException.getMessage();
+    }
+
     //this is the handler for all other errors
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public String catchGlobalExceptions(Exception globalException) {
-        logger.error("Global Exception thrown ", globalException);
-        return globalException.getMessage();
+    public String catchAllOtherExceptions(Exception otherException) {
+        logger.error("Global Exception thrown ", otherException);
+//        return otherException.getMessage();
+        return GLOBAL_EXCEPTION_MESSAGE;
     }
-
 
 }
 //@ResponseStatus

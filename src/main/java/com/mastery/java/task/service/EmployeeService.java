@@ -23,11 +23,7 @@ public class EmployeeService {
 
 
     public List<Employee> getAllEmployeesOrGetEmployeesByNameAndLastName(String firstName, String lastName) {
-        List<Employee> employeesNameLastNameMatch = employeeDAO.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
-        if (employeesNameLastNameMatch.isEmpty()) {
-            throw new EmployeeServiceNotFoundException("Employee Not found");
-        }
-        return employeesNameLastNameMatch;
+        return employeeDAO.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
     }
 
     //    @Transactional is already in the realization of the code in SimpleJPARepository
@@ -49,7 +45,12 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(int employeeId) {
-        employeeDAO.deleteById(employeeId);
+        try {
+            employeeDAO.deleteById(employeeId);
+        }
+        catch(Exception e) {
+            throw new EmployeeServiceNotFoundException("Not found Employee with id = " + employeeId);
+        }
     }
 
 }

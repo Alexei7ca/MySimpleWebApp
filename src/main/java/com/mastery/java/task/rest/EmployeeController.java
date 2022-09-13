@@ -11,7 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -31,7 +33,7 @@ public class EmployeeController {
 
     @GetMapping() //  /employees?firstName=&lastName=
     @ApiOperation(value = "getAllEmployeesOrGetByNameLastName")
-    @ApiResponse(code = 404, message = "Not found")
+    @ApiResponse(code = 500, message = "Internal Server Error")
     public List<Employee> getAllEmployeesOrGetByNameAndLastName(@RequestParam(defaultValue = "") String firstName, @RequestParam(defaultValue = "") String lastName) {
         logger.info("GetAllEmployeesOrGetByNameLastName - params: firstName - {}, lastName - {}", firstName, lastName);
         return employeeService.getAllEmployeesOrGetEmployeesByNameAndLastName(firstName, lastName);
@@ -41,9 +43,12 @@ public class EmployeeController {
     @ApiOperation(value = "getEmployeeById")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public Employee getEmployeeById(@PathVariable(value = "employeeId") @Min(value = 1, message = "id cannot be 0 or a negative number") int employeeId) { // how to break the program by changing this int name???
+    public Employee getEmployeeById(
+            @PathVariable(value = "employeeId") @Min(value = 1, message = "id cannot be 0 or a negative number") int employeeId)
+    {
         logger.info("GetEmployeeById - params: {}", employeeId);
         return employeeService.getEmployeeById(employeeId);
     }
@@ -51,7 +56,10 @@ public class EmployeeController {
 
     @PostMapping()
     @ApiOperation(value = "createEmployee")
-    @ApiResponse(code = 500, message = "Internal Server Error")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public Employee createEmployee(@RequestBody @Valid Employee employee) {
         logger.info("CreateEmployee - params: {}", employee);
         return employeeService.createEmployee(employee);
@@ -78,6 +86,7 @@ public class EmployeeController {
     @ApiOperation(value = "deleteEmployee")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public void deleteEmployee(@PathVariable(value = "employeeId") @Min(value = 1, message = "id cannot be 0 or a negative number") int employeeId) {

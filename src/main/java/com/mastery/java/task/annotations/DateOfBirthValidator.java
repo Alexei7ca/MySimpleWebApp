@@ -9,7 +9,7 @@ public class DateOfBirthValidator implements ConstraintValidator<DateOfBirthCons
 
     public boolean isValid(LocalDate dateOfBirth, ConstraintValidatorContext context) {
 
-        long age = ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
-        return age > 17 && age < 71;
+        return ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now()) > 17;
+
     }
 }
