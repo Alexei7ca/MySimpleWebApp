@@ -22,7 +22,7 @@ public class EmployeeService {
     }
 
 
-    public List<Employee> getAllEmployeesOrGetEmployeesByNameOrLastName(String firstName, String lastName) {
+    public List<Employee> getAllEmployeesOrGetEmployeesByNameAndLastName(String firstName, String lastName) {
         List<Employee> employeesNameLastNameMatch = employeeDAO.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
         if (employeesNameLastNameMatch.isEmpty()) {
             throw new EmployeeServiceNotFoundException("Employee Not found");

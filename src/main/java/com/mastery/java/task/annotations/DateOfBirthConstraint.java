@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
-@Target(value = {METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+@Target(value = FIELD)
 // where do u want to be able to add the annotation (class, field, method, etc)
 @Retention(RetentionPolicy.RUNTIME) //will it validate during runtime or compilation?
 @Documented  //чтобы моя аннотация записалась в джаваДок (документация данного проекта)

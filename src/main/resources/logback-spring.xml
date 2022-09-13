@@ -30,20 +30,6 @@
         </encoder>
     </appender>
 
-    <appender name="WARN_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOGS}/warn.log</file>
-        <append>true</append>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-
     <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOGS}/error.log</file>
         <append>true</append>
@@ -63,7 +49,6 @@
 
     <logger name="com.mastery.java.task" level="INFO">
         <appender-ref ref="ERROR_FILE"/>
-        <appender-ref ref="WARN_FILE"/>
         <appender-ref ref="INFO_FILE"/>
     </logger>
 </configuration>
