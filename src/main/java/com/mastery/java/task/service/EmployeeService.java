@@ -23,7 +23,9 @@ public class EmployeeService {
 
 
     public List<Employee> getAllEmployeesOrGetEmployeesByNameAndLastName(String firstName, String lastName) {
-        return employeeDAO.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
+        return employeeDAO.searchByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
+//        return employeeDAO.getByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
+//        return employeeDAO.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
     }
 
     //    @Transactional is already in the realization of the code in SimpleJPARepository
