@@ -18,7 +18,7 @@ import static java.lang.annotation.ElementType.*;
 
 public @interface DateOfBirthConstraint {
 
-    String message() default "{Employee's age must be between 18 and 70}";
+    String message() default "{Employee must be at least 18yo}";
 
     //represents group of constraints
     public Class<?>[] groups() default {};

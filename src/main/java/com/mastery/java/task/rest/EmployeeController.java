@@ -33,8 +33,10 @@ public class EmployeeController {
     @ApiOperation(value = "getAllEmployeesOrGetByNameLastName")
     @ApiResponse(code = 500, message = "Internal Server Error")
     public List<Employee> getAllEmployeesOrGetByNameAndLastName(@RequestParam(defaultValue = "") String firstName, @RequestParam(defaultValue = "") String lastName) {
-        logger.info("GetAllEmployeesOrGetByNameLastName - params: firstName - {}, lastName - {}", firstName, lastName);
-        return employeeService.getAllEmployeesOrGetEmployeesByNameAndLastName(firstName, lastName);
+        logger.info("IN getAllEmployeesOrGetByNameLastName - params: firstName - {}, lastName - {}", firstName, lastName);
+        List<Employee> allEmployees = employeeService.getAllEmployeesOrGetEmployeesByNameAndLastName(firstName, lastName);
+        logger.info("OUT getAllEmployeesOrGetByNameLastName - params: firstName - {}, lastName - {}", firstName, lastName);
+        return allEmployees;
     }
 
     @GetMapping("/{employeeId}")
@@ -47,8 +49,10 @@ public class EmployeeController {
     public Employee getEmployeeById(
             @PathVariable(value = "employeeId") @Min(value = 1, message = "id cannot be 0 or a negative number") int employeeId)
     {
-        logger.info("GetEmployeeById - params: {}", employeeId);
-        return employeeService.getEmployeeById(employeeId);
+        logger.info("IN getEmployeeById - params: {}", employeeId);
+        Employee employeeById = employeeService.getEmployeeById(employeeId);
+        logger.info("OUT getEmployeeById - params: {}", employeeId);
+        return employeeById;
     }
 
 
@@ -59,8 +63,10 @@ public class EmployeeController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public Employee createEmployee(@RequestBody @Valid Employee employee) {
-        logger.info("CreateEmployee - params: {}", employee);
-        return employeeService.createEmployee(employee);
+        logger.info("IN createEmployee - params: {}", employee);
+        Employee createdEmployee = employeeService.createEmployee(employee);
+        logger.info("OUT createEmployee - params: {}", employee);
+        return createdEmployee;
     }
 
 
@@ -72,11 +78,13 @@ public class EmployeeController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public Employee updateEmployee(@PathVariable(value = "employeeId") @Min(value = 1, message = "id cannot be 0 or a negative number") int employeeId, @Valid @RequestBody Employee employee) {  //since the names for the method parameter and the path variable are the same we do not need to add a parameter to @PathVariable
-        logger.info("UpdateEmployee - params: Id of employee to be updated {}, new employee params {}", employeeId, employee);
+        logger.info("IN updateEmployee - params: Id of employee to be updated {}, employee params {}", employeeId, employee);
         if (employeeId != employee.getEmployeeId()) {
             throw new IllegalArgumentException("Employee ids do not match");
         }
-        return employeeService.updateEmployee(employeeId, employee);
+        Employee updatedEmployee = employeeService.updateEmployee(employeeId, employee);
+        logger.info("OUT updateEmployee - employee params {}",employee);
+        return updatedEmployee;
     }
 
 
@@ -88,8 +96,9 @@ public class EmployeeController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public void deleteEmployee(@PathVariable(value = "employeeId") @Min(value = 1, message = "id cannot be 0 or a negative number") int employeeId) {
-        logger.info("DeleteEmployee - params: employeeId{}", employeeId);
+        logger.info("IN deleteEmployee - params: employeeId{}", employeeId);
         employeeService.deleteEmployee(employeeId);
+        logger.info("OUT deleteEmployee - params: employeeId{}", employeeId);
     }
 
 }

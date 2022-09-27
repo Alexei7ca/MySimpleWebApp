@@ -17,7 +17,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 // this is a combination of @ControllerAdvice + @ResponseBody  // without this we would need to add the @ExceptionHandler to all our Controller classes
 public class GlobalEmployeeServiceExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEmployeeServiceExceptionHandler.class);
-    private final String GLOBAL_EXCEPTION_MESSAGE = "Internal Server Error";
+//    private final String GLOBAL_EXCEPTION_MESSAGE = "Internal Server Error";
+    private final String GLOBAL_EXCEPTION_MESSAGE = "Something went wrong.";
 
 
     @ExceptionHandler(EmployeeServiceNotFoundException.class)
@@ -55,7 +56,7 @@ public class GlobalEmployeeServiceExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public String catchAllOtherExceptions(Exception otherException) {
-        logger.error("Global Exception thrown ", otherException);
+        logger.error("Internal Server Error ", otherException);
 //        return otherException.getMessage();
         return GLOBAL_EXCEPTION_MESSAGE;
     }

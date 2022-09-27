@@ -14,5 +14,3 @@ public interface EmployeeDAO extends JpaRepository<Employee, Integer> {
     List<Employee> getByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(String firstName, String lastName);
     List<Employee> searchByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(String firstName, String lastName);
 }
-
-//findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase как это выглядет на sql

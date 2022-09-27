@@ -21,6 +21,9 @@
             <column  name="job_title"  value="sales"/>
             <column  name="date_of_birth"  value="2000-05-18"/>
         </insert>
+<!--        <rollback>-->
+<!--            -->
+<!--        </rollback>-->
     </changeSet>
 
 </databaseChangeLog>

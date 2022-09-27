@@ -5,12 +5,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity  // объект который будет мапиться в таблицу в базе данных
 @Table(name = "employees")
-public class Employee {
+public class Employee implements Serializable {  //implemented Serializable so there's no need to override default message converter bean
     public Employee(Integer employeeId, String firstName, String lastName, Gender gender, int departmentId, String jobTitle, LocalDate dateOfBirth) {
         this.employeeId = employeeId;
         this.firstName = firstName;

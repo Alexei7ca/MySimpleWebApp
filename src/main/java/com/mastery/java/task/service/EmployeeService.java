@@ -3,6 +3,8 @@ package com.mastery.java.task.service;
 import com.mastery.java.task.dao.EmployeeDAO;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.exceptions.EmployeeServiceNotFoundException;
+import com.mastery.java.task.jms.producer.MessageProducer;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,9 +14,11 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeDAO employeeDAO;
+    private final MessageProducer messageProducer;
 
-    public EmployeeService(EmployeeDAO employeeDAO) {
+    public EmployeeService(EmployeeDAO employeeDAO, MessageProducer messageProducer) {
         this.employeeDAO = employeeDAO;
+        this.messageProducer = messageProducer;
     }
 
     public Employee getEmployeeById(Integer employeeId) {
@@ -53,6 +57,10 @@ public class EmployeeService {
         catch(Exception e) {
             throw new EmployeeServiceNotFoundException("Not found Employee with id = " + employeeId);
         }
+    }
+
+    public void createEmployeeUsingMessageBroker(Employee employee) {
+        messageProducer.createEmployeeUsingMessageBroker(employee);
     }
 
 }

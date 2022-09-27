@@ -8,10 +8,6 @@
       http://www.liquibase.org/xml/ns/pro
       http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 <!--    <includeAll path="db/changelog"/>-->
-    <include file="db/changelog/changelog-createTableEmployees.xml"/>
-<!--    <include file="db/changelog/changelog-setIdAutoincrement.xml"/>-->
-    <include file="db/changelog/changelog-addNewEmployee.xml"/>
-<!--    <include file="db/changelog/changelog-deleteEmployee.xml"/>-->
-<!--    <include file="db/changelog/changelog-addNewColumn.xml"/>-->
-<!--    <include file="db/changelog/changelog-dropColumn.xml"/>-->
+    <include file="db/changelog/changeset/changelog-createTableEmployees.xml"/>
+    <include file="db/changelog/changeset/changelog-addNewEmployee.xml"/>
 </databaseChangeLog>
